@@ -1,23 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Lightbulb, Home, Castle, Info, Users, ArrowRight, ArrowLeft, Check, X, ClipboardList, ScanLine, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { Home, Castle, Info, Users, Check, X, ScanLine } from 'lucide-react';
+
+interface GameResult {
+  hasError: boolean;
+  liedCard: number | null;
+  guessedNumber: number;
+  syndrome: number;
+  errorType: 'should_select' | 'should_not_select' | null;
+}
+
+interface ExplanationData {
+  visitor: number;
+  appearances: number;
+  isInvited: boolean;
+  housesToCheck: number[];
+}
+
+interface ShowExplanation {
+  angelId: number;
+  explanationData: ExplanationData[];
+  housesToCheck: number[];
+}
 
 const HammingVillage = () => {
   const [step, setStep] = useState(1);
 
   // ---------------- STEP 2 STATE ----------------
-  const [activeDataBit, setActiveDataBit] = useState(null);
+  const [activeDataBit, setActiveDataBit] = useState<number | null>(null);
 
   // ---------------- STEP 3 STATE ----------------
-  const [activeGuardian, setActiveGuardian] = useState(null);
-  const [angelLists, setAngelLists] = useState({ 1: [], 2: [], 4: [] });
-  const [angelDisplayLists, setAngelDisplayLists] = useState({ 1: [], 2: [], 4: [] });
-  const [scanningAngel, setScanningAngel] = useState(null);
-  const [selectedAngel, setSelectedAngel] = useState(null);
-  const [showExplanation, setShowExplanation] = useState(null);
+  const [activeGuardian, setActiveGuardian] = useState<number | null>(null);
+  const [angelLists, setAngelLists] = useState<{ [key: number]: number[] }>({ 1: [], 2: [], 4: [] });
+  const [angelDisplayLists, setAngelDisplayLists] = useState<{ [key: number]: number[] }>({ 1: [], 2: [], 4: [] });
+  const [scanningAngel, setScanningAngel] = useState<number | null>(null);
+  const [showExplanation, setShowExplanation] = useState<ShowExplanation | null>(null);
 
   // ---------------- STEP 4 STATE (was step 5) ----------------
-  const [playerSelectedCards, setPlayerSelectedCards] = useState([]);
-  const [gameResult, setGameResult] = useState(null);
+  const [playerSelectedCards, setPlayerSelectedCards] = useState<number[]>([]);
+  const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
   // 基础屋子数据
   const houses = [
@@ -55,7 +75,7 @@ const HammingVillage = () => {
 
   // ---------------- HELPER FUNCTIONS ----------------
 
-  const isGuarded = (house) => {
+  const isGuarded = (house: { binary: number[] }) => {
     if (!activeGuardian) return false;
     if (activeGuardian === 1) return house.binary[0] === 1;
     if (activeGuardian === 2) return house.binary[1] === 1;
@@ -63,17 +83,17 @@ const HammingVillage = () => {
     return false;
   };
 
-  const hasDataBit = (number, bit) => {
+  const hasDataBit = (number: number, bit: number) => {
     return (number & bit) === bit;
   };
 
-  const getBitDotColor = (bit) => {
+  const getBitDotColor = (bit: number) => {
     const house = residentHouses.find(h => h.bit === bit);
     return house ? house.colorClass : 'bg-slate-500';
   };
 
   // Step 4: 切换卡牌选择
-  const toggleCardSelection = (houseId) => {
+  const toggleCardSelection = (houseId: number) => {
     if (gameResult) return;
     setPlayerSelectedCards(prev => {
       if (prev.includes(houseId)) {
@@ -112,9 +132,9 @@ const HammingVillage = () => {
 
     let errorPosition = syndrome;
     let hasError = syndrome !== 0;
-    let liedCard = null;
+    let liedCard: number | null = null;
     let actualNumber = guessedNumber;
-    let errorType = null;
+    let errorType: 'should_select' | 'should_not_select' | null = null;
 
     if (hasError) {
       liedCard = errorPosition;
@@ -193,12 +213,11 @@ const HammingVillage = () => {
   };
 
   // Step 3: 天使工作逻辑（带动画）
-  const performAngelScanStep3 = (angelId) => {
+  const performAngelScanStep3 = (angelId: number) => {
     // 如果天使已经有名单，清空它
     if (angelLists[angelId].length > 0) {
       setAngelLists(prev => ({ ...prev, [angelId]: [] }));
       setAngelDisplayLists(prev => ({ ...prev, [angelId]: [] }));
-      setSelectedAngel(null);
       setShowExplanation(null);
       return;
     }
@@ -207,14 +226,14 @@ const HammingVillage = () => {
     setScanningAngel(angelId);
 
     // 确定该天使管辖的屋子
-    let housesToCheck = [];
+    let housesToCheck: number[] = [];
     if (angelId === 1) housesToCheck = [3, 5, 7];
     if (angelId === 2) housesToCheck = [3, 6, 7];
     if (angelId === 4) housesToCheck = [5, 6, 7];
 
     // 遍历所有15位村民，并记录详细信息
-    const invitedVisitors = [];
-    const explanationData = [];
+    const invitedVisitors: number[] = [];
+    const explanationData: ExplanationData[] = [];
 
     for (let visitor = 1; visitor <= 15; visitor++) {
       let appearances = 0;
@@ -260,7 +279,6 @@ const HammingVillage = () => {
         if (index === invitedVisitors.length - 1) {
           setTimeout(() => {
             setScanningAngel(null);
-            setSelectedAngel(angelId);
             setShowExplanation({
               angelId,
               explanationData,
@@ -322,7 +340,7 @@ const HammingVillage = () => {
               let residentHouseDef = null;
 
               if (!isAngel) {
-                const bitMap = { 3: 1, 5: 2, 6: 4, 7: 8 };
+                const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
                 const bit = bitMap[house.id];
                 residentHouseDef = residentHouses.find(r => r.bit === bit);
                 if (residentHouseDef) {
@@ -394,10 +412,10 @@ const HammingVillage = () => {
               const isAngel = house.type === 'angel';
               let iconColor = 'text-slate-600';
               let residentHouseDef = null;
-              let houseList = [];
+              let houseList: number[] = [];
 
               if (!isAngel) {
-                const bitMap = { 3: 1, 5: 2, 6: 4, 7: 8 };
+                const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
                 const bit = bitMap[house.id];
                 residentHouseDef = residentHouses.find(r => r.bit === bit);
                 if (residentHouseDef) {
@@ -441,7 +459,7 @@ const HammingVillage = () => {
 
                   <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
                     {!isAngel && houseList.length > 0 ? (
-                      houseList.map(num => (
+                      houseList.map((num: number) => (
                         <span
                           key={num}
                           className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-white text-slate-900"
@@ -508,11 +526,11 @@ const HammingVillage = () => {
 
               let iconColor = 'text-slate-600';
               let residentHouseDef = null;
-              let houseList = [];
-              let displayList = [];
+              let houseList: number[] = [];
+              let displayList: number[] = [];
 
               if (!isAngel) {
-                const bitMap = { 3: 1, 5: 2, 6: 4, 7: 8 };
+                const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
                 const bit = bitMap[house.id];
                 residentHouseDef = residentHouses.find(r => r.bit === bit);
                 if (residentHouseDef) {
@@ -563,7 +581,7 @@ const HammingVillage = () => {
                   <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
                     {isAngel ? (
                       displayList.length > 0 ? (
-                        displayList.map(num => (
+                        displayList.map((num: number) => (
                           <span
                             key={num}
                             className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-amber-400 text-slate-900 animate-in zoom-in-95 duration-300"
@@ -578,7 +596,7 @@ const HammingVillage = () => {
                       )
                     ) : (
                       houseList.length > 0 ? (
-                        houseList.map(num => (
+                        houseList.map((num: number) => (
                           <span
                             key={num}
                             className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-white text-slate-900"
@@ -701,7 +719,7 @@ const HammingVillage = () => {
                 他的规则是：如果一个村民在<strong className="text-green-400">单数个</strong>名单上出现，就邀请；如果在<strong className="text-red-400">双数个</strong>名单上出现，就不邀请。
               </p>
               <div className="space-y-2">
-                {showExplanation.explanationData.map((data, idx) => (
+                {showExplanation.explanationData.map((data: ExplanationData, idx: number) => (
                   <div
                     key={idx}
                     className={`flex items-center gap-3 p-3 rounded-lg ${
@@ -765,7 +783,7 @@ const HammingVillage = () => {
               const isAngel = house.type === 'angel';
               const isSelected = playerSelectedCards.includes(house.id);
 
-              let houseList = [];
+              let houseList: number[] = [];
               let houseColorClass = 'bg-slate-800/50';
               let houseBorderColor = 'border-slate-700';
 
@@ -776,7 +794,7 @@ const HammingVillage = () => {
                 houseList = angelLists[house.id] || [];
                 if (houseList.length === 0) {
                   houseList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].filter(num => {
-                    let housesToCheck = [];
+                    let housesToCheck: number[] = [];
                     if (house.id === 1) housesToCheck = [3, 5, 7];
                     if (house.id === 2) housesToCheck = [3, 6, 7];
                     if (house.id === 4) housesToCheck = [5, 6, 7];
@@ -792,7 +810,7 @@ const HammingVillage = () => {
                   });
                 }
               } else {
-                const bitMap = { 3: 1, 5: 2, 6: 4, 7: 8 };
+                const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
                 const bit = bitMap[house.id];
                 residentHouseDef = residentHouses.find(r => r.bit === bit);
                 if (residentHouseDef) {
@@ -853,7 +871,7 @@ const HammingVillage = () => {
                   </div>
 
                   <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
-                    {houseList.map(num => (
+                    {houseList.map((num: number) => (
                       <span
                         key={num}
                         className={`text-xs w-6 h-6 flex items-center justify-center rounded font-bold
