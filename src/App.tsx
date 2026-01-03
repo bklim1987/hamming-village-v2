@@ -846,7 +846,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1103,7 +1103,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1179,7 +1179,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1246,7 +1246,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1331,7 +1331,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1398,7 +1398,7 @@ const HammingVillage = () => {
                   )}
 
                   {isLiedCard && gameResult && (
-                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-20 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">
                         {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
                       </span>
@@ -1542,7 +1542,8 @@ const HammingVillage = () => {
             </div>
           )}
 
-            {/* Secret Reveal Panel */}
+            {/* Secret Reveal Panel - Only show after result */}
+            {gameResult && (
             <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-xl p-6 border border-amber-500/30">
               <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 flex items-center gap-2">
                 <span>🔍</span> 揭秘：我是如何知道的？
@@ -1598,6 +1599,7 @@ const HammingVillage = () => {
                 </div>
               </div>
             </div>
+          )}
           </div>
 
         </div>
