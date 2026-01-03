@@ -440,7 +440,7 @@ const HammingVillage = () => {
                   `}
                   style={{ width: '140px', minHeight: '280px' }}
                 >
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
@@ -853,7 +853,7 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
@@ -1030,7 +1030,7 @@ const HammingVillage = () => {
             </p>
             <ol className="text-left text-slate-300 space-y-2 max-w-2xl mx-auto">
               <li>1. 在心里默默想一个 <strong className="text-blue-400">1 到 15</strong> 之间的数字</li>
-              <li>2. 查看下方的8张卡牌，如果你想的数字在卡牌的名单中，就<strong className="text-green-400">点击</strong>该卡牌</li>
+              <li>2. 查看下方的7张卡牌，如果你想的数字在卡牌的名单中，就<strong className="text-green-400">点击</strong>该卡牌</li>
               <li>3. 你可以在<strong className="text-red-400">任意一张卡牌上说谎</strong>（或者诚实回答所有卡牌）</li>
               <li>4. 点击<strong className="text-amber-400">确定</strong>按钮，系统会告诉你：你想的数字是多少，以及你是否说谎</li>
             </ol>
@@ -1039,48 +1039,26 @@ const HammingVillage = () => {
           {/* Grid Layout - 2 rows x 4 columns */}
           <div className="grid grid-cols-4 gap-4 mb-6 w-full max-w-5xl">
             {/* Row 1: 村民登记名单、1号天使、2号天使、3号屋 */}
-            {/* 村民登记名单 (0表示这是特殊卡片) */}
-            <button
-              onClick={() => toggleCardSelection(0)}
-              disabled={!!gameResult}
-              className={`
-                relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
-                bg-slate-800/50 border-2 border-slate-700
-                ${playerSelectedCards.includes(0) ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
-                ${gameResult && gameResult.liedCard === 0 ? 'ring-4 ring-red-500 animate-pulse' : ''}
-                ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
-              `}
-              style={{ minHeight: '280px' }}
+            {/* 村民登记名单 (只显示，不可选择) */}
+            <div
+              className="relative flex flex-col items-center p-4 rounded-xl transition-all duration-300 bg-slate-800/50 border-2 border-slate-700"
+              style={{ width: '140px', minHeight: '280px' }}
             >
-              {playerSelectedCards.includes(0) && !gameResult && (
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
-                  <Check size={20} className="text-white" />
-                </div>
-              )}
-
-              {gameResult && gameResult.liedCard === 0 && (
-                <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">
-                    {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
-                  </span>
-                </div>
-              )}
-
-              <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+              <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
               </div>
 
               <div className="mb-2">
-                <Users size={40} className="text-indigo-400" />
+                <Users size={36} className="text-indigo-400" />
               </div>
 
-              <div className="text-lg font-bold text-white mb-3">
+              <div className="text-base font-bold text-white mb-3">
                 村民登记名单
               </div>
 
-              <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+              <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-20 overflow-auto border border-slate-700/50">
                 {visitors.map((num: number) => (
                   <span
                     key={num}
@@ -1090,7 +1068,11 @@ const HammingVillage = () => {
                   </span>
                 ))}
               </div>
-            </button>
+
+              <div className="mt-2 flex items-center justify-center">
+                <span className="text-xs text-slate-500 italic">仅供参考</span>
+              </div>
+            </div>
 
             {/* 1号天使 */}
             {(() => {
@@ -1124,7 +1106,7 @@ const HammingVillage = () => {
                     ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
                     ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
                   `}
-                  style={{ minHeight: '280px' }}
+                  style={{ width: '140px', minHeight: '280px' }}
                 >
                   {isSelected && !gameResult && (
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
@@ -1140,17 +1122,17 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
                   </div>
 
                   <div className="mb-2">
-                    <Castle size={40} className="text-amber-400" />
+                    <Castle size={36} className="text-amber-400" />
                   </div>
 
-                  <div className="text-lg font-bold text-white mb-3">
+                  <div className="text-base font-bold text-white mb-3">
                     {house.id}号天使
                   </div>
 
@@ -1200,7 +1182,7 @@ const HammingVillage = () => {
                     ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
                     ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
                   `}
-                  style={{ minHeight: '280px' }}
+                  style={{ width: '140px', minHeight: '280px' }}
                 >
                   {isSelected && !gameResult && (
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
@@ -1216,17 +1198,17 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
                   </div>
 
                   <div className="mb-2">
-                    <Castle size={40} className="text-amber-400" />
+                    <Castle size={36} className="text-amber-400" />
                   </div>
 
-                  <div className="text-lg font-bold text-white mb-3">
+                  <div className="text-base font-bold text-white mb-3">
                     {house.id}号天使
                   </div>
 
@@ -1267,7 +1249,7 @@ const HammingVillage = () => {
                     ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
                     ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
                   `}
-                  style={{ minHeight: '280px' }}
+                  style={{ width: '140px', minHeight: '280px' }}
                 >
                   {isSelected && !gameResult && (
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
@@ -1283,17 +1265,17 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
                   </div>
 
                   <div className="mb-2">
-                    <Home size={40} className={iconColor} />
+                    <Home size={36} className={iconColor} />
                   </div>
 
-                  <div className="text-lg font-bold text-white mb-3">
+                  <div className="text-base font-bold text-white mb-3">
                     {house.id}号屋
                   </div>
 
@@ -1350,7 +1332,7 @@ const HammingVillage = () => {
                     ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
                     ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
                   `}
-                  style={{ minHeight: '280px' }}
+                  style={{ width: '140px', minHeight: '280px' }}
                 >
                   {isSelected && !gameResult && (
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
@@ -1366,17 +1348,17 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
                   </div>
 
                   <div className="mb-2">
-                    <Castle size={40} className="text-amber-400" />
+                    <Castle size={36} className="text-amber-400" />
                   </div>
 
-                  <div className="text-lg font-bold text-white mb-3">
+                  <div className="text-base font-bold text-white mb-3">
                     {house.id}号天使
                   </div>
 
@@ -1417,7 +1399,7 @@ const HammingVillage = () => {
                     ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
                     ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
                   `}
-                  style={{ minHeight: '280px' }}
+                  style={{ width: '140px', minHeight: '280px' }}
                 >
                   {isSelected && !gameResult && (
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
@@ -1433,17 +1415,17 @@ const HammingVillage = () => {
                     </div>
                   )}
 
-                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg z-10">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
                   </div>
 
                   <div className="mb-2">
-                    <Home size={40} className={iconColor} />
+                    <Home size={36} className={iconColor} />
                   </div>
 
-                  <div className="text-lg font-bold text-white mb-3">
+                  <div className="text-base font-bold text-white mb-3">
                     {house.id}号屋
                   </div>
 
