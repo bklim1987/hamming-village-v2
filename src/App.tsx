@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Home, Castle, Info, Users, Check, X, ScanLine } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Home, Castle, Info, Users, Check, X, ScanLine, Lock } from 'lucide-react';
 
 interface GameResult {
   hasError: boolean;
@@ -24,6 +24,31 @@ interface ShowExplanation {
 
 const HammingVillage = () => {
   const [step, setStep] = useState(1);
+  const [isVip, setIsVip] = useState(false);
+
+  // 检测 VIP 状态
+  useEffect(() => {
+    // 检查 localStorage
+    const vipStatus = localStorage.getItem('hamming_vip');
+    if (vipStatus === 'true') {
+      setIsVip(true);
+      return;
+    }
+
+    // 检查 URL 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('vip') === 'true') {
+      setIsVip(true);
+      localStorage.setItem('hamming_vip', 'true');
+    }
+  }, []);
+
+  // 非 VIP 用户只能访问 Phase 4
+  useEffect(() => {
+    if (!isVip && step !== 4) {
+      setStep(4);
+    }
+  }, [isVip, step]);
 
   // ---------------- STEP 2 STATE ----------------
   const [activeDataBit, setActiveDataBit] = useState<number | null>(null);
@@ -314,15 +339,26 @@ const HammingVillage = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map(s => (
-            <button
-              key={s}
-              onClick={() => setStep(s)}
-              className={`px-3 py-1 rounded text-sm transition-colors ${step === s ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-            >
-              Phase {s}
-            </button>
-          ))}
+          {[1, 2, 3, 4, 5].map(s => {
+            const isLocked = !isVip && s !== 4;
+            return (
+              <button
+                key={s}
+                onClick={() => !isLocked && setStep(s)}
+                disabled={isLocked}
+                className={`px-3 py-1 rounded text-sm transition-colors flex items-center gap-1 ${
+                  isLocked
+                    ? 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                    : step === s
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`}
+              >
+                {isLocked && <Lock size={14} />}
+                Phase {s}
+              </button>
+            );
+          })}
         </div>
       </div>
 
