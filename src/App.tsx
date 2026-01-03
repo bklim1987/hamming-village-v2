@@ -1659,7 +1659,7 @@ const HammingVillage = () => {
 
                           <div className="space-y-2">
                             <p className="text-xs text-slate-300 leading-relaxed">
-                              任何一个村民，在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>中会出现<strong className="text-green-400">偶数次</strong>（这是2号天使守护的核心规则）。
+                              任何一个村民，在<strong className="text-amber-400">2/6/3/7(2号天使守护)</strong>中会出现<strong className="text-green-400">双数次</strong>。
                             </p>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
