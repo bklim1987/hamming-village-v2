@@ -923,14 +923,14 @@ const HammingVillage = () => {
 
           {gameResult && (
             <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border-2 border-amber-500 shadow-2xl animate-in zoom-in-95 duration-500">
-              <h3 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+              <h3 className="text-2xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
                 读心结果
               </h3>
 
               <div className="space-y-4">
-                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700">
-                  <p className="text-slate-400 mb-2">你心里想的数字是：</p>
-                  <p className="text-6xl font-bold text-center text-white">
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+                  <p className="text-slate-400 mb-2 text-sm">你心里想的数字是：</p>
+                  <p className="text-5xl font-bold text-center text-white">
                     {gameResult.guessedNumber}
                   </p>
                 </div>
@@ -961,12 +961,12 @@ const HammingVillage = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-green-900/30 rounded-xl p-6 border-2 border-green-500">
-                    <p className="text-green-300 text-lg font-semibold mb-2">诚实的玩家！</p>
-                    <p className="text-green-200">
+                  <div className="bg-green-900/30 rounded-xl p-4 border-2 border-green-500">
+                    <p className="text-green-300 font-semibold mb-2">诚实的玩家！</p>
+                    <p className="text-green-200 text-sm">
                       你在所有卡牌上都说了实话
                     </p>
-                    <p className="text-sm text-green-300 mt-3">
+                    <p className="text-xs text-green-300 mt-2">
                       汉明码确认无误！
                     </p>
                   </div>
@@ -1021,24 +1021,12 @@ const HammingVillage = () => {
 
       {/* ==================== STEP 5 CONTENT ==================== */}
       {step === 5 && (
-        <div className="w-full max-w-6xl flex flex-col items-center animate-in fade-in duration-500">
+        <div className="w-full max-w-7xl flex gap-6 items-start justify-center animate-in fade-in duration-500">
 
-          <div className="text-center mb-6 bg-slate-800/80 rounded-xl p-6 border border-slate-700">
-            <h2 className="text-2xl font-bold mb-3 text-white">汉明码读心术 - 大脑风暴</h2>
-            <p className="text-slate-300 mb-2">
-              <strong>游戏规则：</strong>
-            </p>
-            <ol className="text-left text-slate-300 space-y-2 max-w-2xl mx-auto">
-              <li>1. 在心里默默想一个 <strong className="text-blue-400">1 到 15</strong> 之间的数字</li>
-              <li>2. 查看下方的7张卡牌，如果你想的数字在卡牌的名单中，就<strong className="text-green-400">点击</strong>该卡牌</li>
-              <li>3. 你可以在<strong className="text-red-400">任意一张卡牌上说谎</strong>（或者诚实回答所有卡牌）</li>
-              <li>4. 点击<strong className="text-amber-400">确定</strong>按钮，系统会告诉你：你想的数字是多少，以及你是否说谎</li>
-            </ol>
-          </div>
-
-          {/* Grid Layout - 2 rows x 4 columns */}
-          <div className="grid grid-cols-4 gap-4 mb-6 w-full max-w-5xl">
+          {/* Left Side: Cards Grid (2 rows x 4 columns) */}
+          <div className="flex flex-col gap-4">
             {/* Row 1: 村民登记名单、1号天使、2号天使、3号屋 */}
+            <div className="grid grid-cols-4 gap-4">
             {/* 村民登记名单 (只显示，不可选择) */}
             <div
               className="relative flex flex-col items-center p-4 rounded-xl transition-all duration-300 bg-slate-800/50 border-2 border-slate-700"
@@ -1298,8 +1286,10 @@ const HammingVillage = () => {
                 </button>
               );
             })()}
+            </div>
 
             {/* Row 2: 4号天使、5号屋、6号屋、7号屋 */}
+            <div className="grid grid-cols-4 gap-4">
             {/* 4号天使 */}
             {(() => {
               const house = houses[3];
@@ -1448,12 +1438,32 @@ const HammingVillage = () => {
                 </button>
               );
             })}
+            </div>
           </div>
 
-          <div className="flex flex-col items-center gap-2 mb-6">
-            {!gameResult && playerSelectedCards.length === 0 && (
-              <p className="text-sm text-slate-400 italic">请至少选择一张卡牌</p>
-            )}
+          {/* Right Side: Rules and Result Panel */}
+          <div className="flex flex-col gap-4 w-96">
+            {/* Rules Panel */}
+            <div className="bg-slate-800/80 rounded-xl p-6 border border-slate-700">
+              <h2 className="text-2xl font-bold mb-4 text-white text-center">汉明码读心术</h2>
+              <div className="mb-4">
+                <p className="text-slate-300 font-semibold mb-2">游戏规则：</p>
+                <ol className="text-slate-300 space-y-2 text-sm">
+                  <li>1. 在心里默默想一个 <strong className="text-blue-400">1 到 15</strong> 之间的数字</li>
+                  <li>2. 查看下方的7张卡牌，如果你想的数字在卡牌的名单中，就<strong className="text-green-400">点击</strong>该卡牌</li>
+                  <li>3. 你可以在<strong className="text-red-400">任意一张卡牌上说谎</strong>（或者诚实回答所有卡牌）</li>
+                  <li>4. 点击<strong className="text-amber-400">确定</strong>按钮，系统会告诉你：你想的数字是多少，以及你是否说谎</li>
+                </ol>
+              </div>
+
+              {!gameResult && (
+                <div className="text-center text-sm text-slate-400 italic border-t border-slate-700 pt-3">
+                  请至少选择一张卡牌
+                </div>
+              )}
+            </div>
+
+            {/* Action Button */}
             {!gameResult ? (
               <button
                 onClick={calculateResult}
@@ -1469,32 +1479,32 @@ const HammingVillage = () => {
             ) : (
               <button
                 onClick={resetGame}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
                 重新开始
               </button>
             )}
-          </div>
 
-          {gameResult && (
-            <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border-2 border-amber-500 shadow-2xl animate-in zoom-in-95 duration-500">
-              <h3 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+            {/* Result Panel */}
+            {gameResult && (
+            <div className="w-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 border-2 border-amber-500 shadow-2xl animate-in zoom-in-95 duration-500">
+              <h3 className="text-2xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
                 读心结果
               </h3>
 
               <div className="space-y-4">
-                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700">
-                  <p className="text-slate-400 mb-2">你心里想的数字是：</p>
-                  <p className="text-6xl font-bold text-center text-white">
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+                  <p className="text-slate-400 mb-2 text-sm">你心里想的数字是：</p>
+                  <p className="text-5xl font-bold text-center text-white">
                     {gameResult.guessedNumber}
                   </p>
                 </div>
 
                 {gameResult.hasError ? (
-                  <div className="bg-red-900/30 rounded-xl p-6 border-2 border-red-500">
-                    <p className="text-red-300 text-lg font-semibold mb-2">检测到说谎！</p>
-                    <p className="text-red-200 mb-2">
-                      你在 <strong className="text-2xl text-red-400">
+                  <div className="bg-red-900/30 rounded-xl p-4 border-2 border-red-500">
+                    <p className="text-red-300 font-semibold mb-2">检测到说谎！</p>
+                    <p className="text-red-200 mb-2 text-sm">
+                      你在 <strong className="text-xl text-red-400">
                         {gameResult.liedCard === 0 ? '村民登记名单' : `#${gameResult.liedCard}`}
                       </strong> {gameResult.liedCard === 0 ? '' : '号'}卡牌上说谎了
                     </p>
@@ -1518,12 +1528,12 @@ const HammingVillage = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-green-900/30 rounded-xl p-6 border-2 border-green-500">
-                    <p className="text-green-300 text-lg font-semibold mb-2">诚实的玩家！</p>
-                    <p className="text-green-200">
+                  <div className="bg-green-900/30 rounded-xl p-4 border-2 border-green-500">
+                    <p className="text-green-300 font-semibold mb-2">诚实的玩家！</p>
+                    <p className="text-green-200 text-sm">
                       你在所有卡牌上都说了实话
                     </p>
-                    <p className="text-sm text-green-300 mt-3">
+                    <p className="text-xs text-green-300 mt-2">
                       汉明码确认无误！
                     </p>
                   </div>
@@ -1531,6 +1541,7 @@ const HammingVillage = () => {
               </div>
             </div>
           )}
+          </div>
 
         </div>
       )}
