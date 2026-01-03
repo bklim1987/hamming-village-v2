@@ -1446,7 +1446,7 @@ const HammingVillage = () => {
           </div>
 
           {/* Right Side: Rules and Result Panel */}
-          <div className="flex flex-col gap-4 w-96">
+          <div className="relative flex flex-col gap-4 w-96">
             {/* Rules Panel */}
             <div className="bg-slate-800/80 rounded-xl p-6 border border-slate-700">
               <h2 className="text-2xl font-bold mb-4 text-white text-center">汉明码读心术</h2>
@@ -1468,7 +1468,7 @@ const HammingVillage = () => {
             </div>
 
             {/* Action Button */}
-            {!gameResult ? (
+            {!gameResult && (
               <button
                 onClick={calculateResult}
                 disabled={playerSelectedCards.length === 0}
@@ -1480,27 +1480,6 @@ const HammingVillage = () => {
               >
                 确定 - 公布答案
               </button>
-            ) : (
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={resetGame}
-                  className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-                >
-                  重新开始
-                </button>
-                <button
-                  onClick={() => {
-                    setShowSecretPanel(!showSecretPanel);
-                    if (!showSecretPanel) {
-                      setExpandRule2(false);
-                    }
-                  }}
-                  className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
-                >
-                  <Info size={20} />
-                  {showSecretPanel ? '收起揭秘' : '揭秘原理'}
-                </button>
-              </div>
             )}
 
             {/* Result Panel */}
@@ -1557,12 +1536,34 @@ const HammingVillage = () => {
                   </div>
                 )}
               </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col gap-3 mt-4">
+                <button
+                  onClick={resetGame}
+                  className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  重新开始
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSecretPanel(!showSecretPanel);
+                    if (!showSecretPanel) {
+                      setExpandRule2(false);
+                    }
+                  }}
+                  className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
+                >
+                  <Info size={20} />
+                  {showSecretPanel ? '收起揭秘' : '揭秘原理'}
+                </button>
+              </div>
             </div>
           )}
 
-            {/* Secret Reveal Panel - Overlay on cards area */}
+            {/* Secret Reveal Panel - Overlay on right side */}
             {gameResult && showSecretPanel && (
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-sm rounded-xl p-6 border-2 border-amber-500/50 z-50 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-sm rounded-xl p-6 border-2 border-amber-500/50 z-50 overflow-y-auto animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 flex items-center gap-2">
                   <Info size={24} />
@@ -1589,14 +1590,14 @@ const HammingVillage = () => {
 
                   <div className="space-y-3">
                     <div className="bg-slate-800/50 rounded p-3">
-                      <p className="font-semibold text-green-400 text-xs mb-1">规律 1：偶数规则</p>
+                      <p className="font-semibold text-green-400 text-xs mb-1">规律 1：双数规则</p>
                       <p className="text-xs leading-relaxed">
-                        <strong className="text-white">第二行</strong>（4号天使、5号屋、6号屋、7号屋）被选中的卡牌数量<strong className="text-green-400">一定是偶数</strong>（0、2或4张）
+                        <strong className="text-white">第二行</strong>（4号天使、5号屋、6号屋、7号屋）被选中的卡牌数量<strong className="text-green-400">一定是双数</strong>（0、2或4张）
                       </p>
                     </div>
 
                     <div className="bg-slate-800/50 rounded p-3">
-                      <p className="font-semibold text-cyan-400 text-xs mb-1">规律 2：同列奇偶性</p>
+                      <p className="font-semibold text-cyan-400 text-xs mb-1">规律 2：同列单双性</p>
                       <p className="text-xs leading-relaxed mb-2">
                         观察<strong className="text-white">同一列的上下两张卡牌</strong>：
                       </p>
@@ -1622,31 +1623,31 @@ const HammingVillage = () => {
 
                           <div className="space-y-2">
                             <p className="text-xs text-slate-300 leading-relaxed">
-                              任何一个村民，在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>中会出现<strong className="text-green-400">偶数次</strong>（这是2号天使守护的核心规则）。
+                              任何一个村民，在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>中会出现<strong className="text-green-400">双数次</strong>（这是2号天使守护的核心规则）。
                             </p>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
-                              根据<strong className="text-cyan-400">奇偶性的基本性质</strong>：<br/>
-                              • 偶数 = 偶数 + 偶数<br/>
-                              • 偶数 = 奇数 + 奇数
+                              根据<strong className="text-cyan-400">单双性的基本性质</strong>：<br/>
+                              • 双数 = 双数 + 双数<br/>
+                              • 双数 = 单数 + 单数
                             </p>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
                               因此：<br/>
-                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-green-400">偶数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-green-400">偶数次</strong>。<br/>
-                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-orange-400">奇数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-orange-400">奇数次</strong>。
+                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-green-400">双数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-green-400">双数次</strong>。<br/>
+                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-orange-400">单数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-orange-400">单数次</strong>。
                             </p>
 
                             <div className="border-l-2 border-cyan-500 pl-3 mt-2">
                               <p className="text-xs text-slate-300 leading-relaxed">
-                                同理，任何一个村民在<strong className="text-amber-400">第2列（1号天使/5号屋）</strong>和<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>中也有相同的奇偶性关系（这是1号天使守护的核心规则）。
+                                同理，任何一个村民在<strong className="text-amber-400">第2列（1号天使/5号屋）</strong>和<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>中也有相同的单双性关系（这是1号天使守护的核心规则）。
                               </p>
                             </div>
 
                             <div className="bg-cyan-900/30 rounded p-2 mt-2">
                               <p className="text-xs font-semibold text-cyan-300 mb-1">结论：</p>
                               <p className="text-xs text-slate-300 leading-relaxed">
-                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的奇偶性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列奇偶性"规律的数学原理。
+                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的单双性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列单双性"规律的数学原理。
                               </p>
                             </div>
                           </div>
