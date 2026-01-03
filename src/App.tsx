@@ -1541,6 +1541,63 @@ const HammingVillage = () => {
               </div>
             </div>
           )}
+
+            {/* Secret Reveal Panel */}
+            <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-xl p-6 border border-amber-500/30">
+              <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 flex items-center gap-2">
+                <span>🔍</span> 揭秘：我是如何知道的？
+              </h3>
+
+              <div className="space-y-4 text-slate-300 text-sm">
+                <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                  <p className="font-semibold text-amber-400 mb-2">为什么这样排列？</p>
+                  <p className="text-xs leading-relaxed">
+                    这个2行4列的布局不是随意的！它可以让你的大脑快速进行视觉判断，发现异常。
+                  </p>
+                </div>
+
+                <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                  <p className="font-semibold text-blue-400 mb-3">在没有说谎的情况下：</p>
+
+                  <div className="space-y-3">
+                    <div className="bg-slate-800/50 rounded p-3">
+                      <p className="font-semibold text-green-400 text-xs mb-1">规律 1：偶数规则</p>
+                      <p className="text-xs leading-relaxed">
+                        <strong className="text-white">第二行</strong>（4号天使、5号屋、6号屋、7号屋）被选中的卡牌数量<strong className="text-green-400">一定是偶数</strong>（0、2或4张）
+                      </p>
+                    </div>
+
+                    <div className="bg-slate-800/50 rounded p-3">
+                      <p className="font-semibold text-cyan-400 text-xs mb-1">规律 2：同列奇偶性</p>
+                      <p className="text-xs leading-relaxed mb-2">
+                        观察<strong className="text-white">同一列的上下两张卡牌</strong>：
+                      </p>
+                      <ul className="text-xs space-y-1 ml-4">
+                        <li>• 若 <strong className="text-amber-400">1号天使/5号屋</strong> 恰有<strong className="text-cyan-400">1张</strong>被选中</li>
+                        <li className="ml-4">→ <strong className="text-amber-400">2号天使/6号屋</strong> 和 <strong className="text-amber-400">3号屋/7号屋</strong> 也各恰有<strong className="text-cyan-400">1张</strong>被选中</li>
+                      </ul>
+                      <ul className="text-xs space-y-1 ml-4 mt-2">
+                        <li>• 若 <strong className="text-amber-400">1号天使/5号屋</strong> 有<strong className="text-cyan-400">0或2张</strong>被选中</li>
+                        <li className="ml-4">→ <strong className="text-amber-400">2号天使/6号屋</strong> 和 <strong className="text-amber-400">3号屋/7号屋</strong> 也各是<strong className="text-cyan-400">0或2张</strong>被选中</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
+                  <p className="font-semibold text-red-400 mb-2 text-xs">如果违反了这些规律？</p>
+                  <p className="text-xs leading-relaxed">
+                    说明有人在说谎！汉明码的数学原理会精确定位到<strong className="text-red-400">哪张卡牌</strong>上出现了<strong className="text-red-400">什么类型</strong>的错误（应选未选 或 不应选但选了）。
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-lg p-4 border border-slate-600">
+                  <p className="text-xs leading-relaxed italic text-slate-400">
+                    💡 这就是<strong className="text-amber-400">汉明码</strong>的魔力：不仅能检测错误，还能纠正错误！它被广泛应用于计算机内存、通信系统等领域。
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
