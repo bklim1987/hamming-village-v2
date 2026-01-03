@@ -1647,7 +1647,7 @@ const HammingVillage = () => {
                             <div className="bg-cyan-900/30 rounded p-2 mt-2">
                               <p className="text-xs font-semibold text-cyan-300 mb-1">结论：</p>
                               <p className="text-xs text-slate-300 leading-relaxed">
-                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的奇偶性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列奇偶性"规律的数学原理。
+                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的奇偶性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列奇偶性\"规律的数学原理。
                               </p>
                             </div>
                           </div>
