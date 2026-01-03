@@ -1590,14 +1590,14 @@ const HammingVillage = () => {
 
                   <div className="space-y-3">
                     <div className="bg-slate-800/50 rounded p-3">
-                      <p className="font-semibold text-green-400 text-xs mb-1">规律 1：双数规则</p>
+                      <p className="font-semibold text-green-400 text-xs mb-1">规律 1：偶数规则</p>
                       <p className="text-xs leading-relaxed">
-                        <strong className="text-white">第二行</strong>（4号天使、5号屋、6号屋、7号屋）被选中的卡牌数量<strong className="text-green-400">一定是双数</strong>（0、2或4张）
+                        <strong className="text-white">第二行</strong>（4号天使、5号屋、6号屋、7号屋）被选中的卡牌数量<strong className="text-green-400">一定是偶数</strong>（0、2或4张）
                       </p>
                     </div>
 
                     <div className="bg-slate-800/50 rounded p-3">
-                      <p className="font-semibold text-cyan-400 text-xs mb-1">规律 2：同列单双性</p>
+                      <p className="font-semibold text-cyan-400 text-xs mb-1">规律 2：同列奇偶性</p>
                       <p className="text-xs leading-relaxed mb-2">
                         观察<strong className="text-white">同一列的上下两张卡牌</strong>：
                       </p>
@@ -1623,31 +1623,31 @@ const HammingVillage = () => {
 
                           <div className="space-y-2">
                             <p className="text-xs text-slate-300 leading-relaxed">
-                              任何一个村民，在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>中会出现<strong className="text-green-400">双数次</strong>（这是2号天使守护的核心规则）。
+                              任何一个村民，在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>中会出现<strong className="text-green-400">偶数次</strong>（这是2号天使守护的核心规则）。
                             </p>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
-                              根据<strong className="text-cyan-400">单双性的基本性质</strong>：<br/>
-                              • 双数 = 双数 + 双数<br/>
-                              • 双数 = 单数 + 单数
+                              根据<strong className="text-cyan-400">奇偶性的基本性质</strong>：<br/>
+                              • 偶数 = 偶数 + 偶数<br/>
+                              • 偶数 = 奇数 + 奇数
                             </p>
 
                             <p className="text-xs text-slate-300 leading-relaxed">
                               因此：<br/>
-                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-green-400">双数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-green-400">双数次</strong>。<br/>
-                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-orange-400">单数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-orange-400">单数次</strong>。
+                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-green-400">偶数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-green-400">偶数次</strong>。<br/>
+                              • 如果该村民在<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>出现<strong className="text-orange-400">奇数次</strong>，那么他在<strong className="text-amber-400">第3列（2号天使/6号屋）</strong>也一定出现<strong className="text-orange-400">奇数次</strong>。
                             </p>
 
                             <div className="border-l-2 border-cyan-500 pl-3 mt-2">
                               <p className="text-xs text-slate-300 leading-relaxed">
-                                同理，任何一个村民在<strong className="text-amber-400">第2列（1号天使/5号屋）</strong>和<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>中也有相同的单双性关系（这是1号天使守护的核心规则）。
+                                同理，任何一个村民在<strong className="text-amber-400">第2列（1号天使/5号屋）</strong>和<strong className="text-purple-400">第4列（3号屋/7号屋）</strong>中也有相同的奇偶性关系（这是1号天使守护的核心规则）。
                               </p>
                             </div>
 
                             <div className="bg-cyan-900/30 rounded p-2 mt-2">
                               <p className="text-xs font-semibold text-cyan-300 mb-1">结论：</p>
                               <p className="text-xs text-slate-300 leading-relaxed">
-                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的单双性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列单双性"规律的数学原理。
+                                <strong className="text-amber-400">第2列</strong>、<strong className="text-amber-400">第3列</strong>、<strong className="text-purple-400">第4列</strong>的奇偶性<strong className="text-green-400">完全一致</strong>！这就是为什么你会看到"同列奇偶性"规律的数学原理。
                               </p>
                             </div>
                           </div>
