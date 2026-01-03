@@ -306,10 +306,11 @@ const HammingVillage = () => {
             {step === 2 && 'Phase 2: 村民的DNA'}
             {step === 3 && 'Phase 3: 守护天使的责任'}
             {step === 4 && 'Phase 4: 读心术与纠错'}
+            {step === 5 && 'Phase 5: 大脑风暴'}
           </p>
         </div>
         <div className="flex gap-2">
-          {[1, 2, 3, 4].map(s => (
+          {[1, 2, 3, 4, 5].map(s => (
             <button
               key={s}
               onClick={() => setStep(s)}
@@ -1011,6 +1012,540 @@ const HammingVillage = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      )}
+
+      {/* ==================== STEP 5 CONTENT ==================== */}
+      {step === 5 && (
+        <div className="w-full max-w-6xl flex flex-col items-center animate-in fade-in duration-500">
+
+          <div className="text-center mb-6 bg-slate-800/80 rounded-xl p-6 border border-slate-700">
+            <h2 className="text-2xl font-bold mb-3 text-white">汉明码读心术 - 大脑风暴</h2>
+            <p className="text-slate-300 mb-2">
+              <strong>游戏规则：</strong>
+            </p>
+            <ol className="text-left text-slate-300 space-y-2 max-w-2xl mx-auto">
+              <li>1. 在心里默默想一个 <strong className="text-blue-400">1 到 15</strong> 之间的数字</li>
+              <li>2. 查看下方的8张卡牌，如果你想的数字在卡牌的名单中，就<strong className="text-green-400">点击</strong>该卡牌</li>
+              <li>3. 你可以在<strong className="text-red-400">任意一张卡牌上说谎</strong>（或者诚实回答所有卡牌）</li>
+              <li>4. 点击<strong className="text-amber-400">确定</strong>按钮，系统会告诉你：你想的数字是多少，以及你是否说谎</li>
+            </ol>
+          </div>
+
+          {/* Grid Layout - 2 rows x 4 columns */}
+          <div className="grid grid-cols-4 gap-4 mb-6 w-full max-w-5xl">
+            {/* Row 1: 村民登记名单、1号天使、2号天使、3号屋 */}
+            {/* 村民登记名单 (0表示这是特殊卡片) */}
+            <button
+              onClick={() => toggleCardSelection(0)}
+              disabled={!!gameResult}
+              className={`
+                relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                bg-slate-800/50 border-2 border-slate-700
+                ${playerSelectedCards.includes(0) ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                ${gameResult && gameResult.liedCard === 0 ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+              `}
+              style={{ minHeight: '280px' }}
+            >
+              {playerSelectedCards.includes(0) && !gameResult && (
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                  <Check size={20} className="text-white" />
+                </div>
+              )}
+
+              {gameResult && gameResult.liedCard === 0 && (
+                <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">
+                    {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                  </span>
+                </div>
+              )}
+
+              <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
+                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
+                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-slate-700 opacity-20 text-slate-500">0</div>
+              </div>
+
+              <div className="mb-2">
+                <Users size={40} className="text-indigo-400" />
+              </div>
+
+              <div className="text-lg font-bold text-white mb-3">
+                村民登记名单
+              </div>
+
+              <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                {visitors.map((num: number) => (
+                  <span
+                    key={num}
+                    className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-indigo-400 text-slate-900"
+                  >
+                    {num}
+                  </span>
+                ))}
+              </div>
+            </button>
+
+            {/* 1号天使 */}
+            {(() => {
+              const house = houses[0];
+              const isSelected = playerSelectedCards.includes(house.id);
+              let houseList = angelLists[house.id] || [];
+              if (houseList.length === 0) {
+                houseList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].filter(num => {
+                  let housesToCheck: number[] = [3, 5, 7];
+                  let appearances = 0;
+                  housesToCheck.forEach(houseId => {
+                    const residentHouse = residentHouses.find(h => h.id === houseId);
+                    if (residentHouse && residentHouse.list.includes(num)) {
+                      appearances++;
+                    }
+                  });
+                  return appearances % 2 !== 0;
+                });
+              }
+              const isLiedCard = gameResult && gameResult.liedCard === house.id;
+
+              return (
+                <button
+                  key={house.id}
+                  onClick={() => toggleCardSelection(house.id)}
+                  disabled={!!gameResult}
+                  className={`
+                    relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                    bg-slate-800/50 border-2 border-slate-700
+                    ${isSelected ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                    ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                    ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+                  `}
+                  style={{ minHeight: '280px' }}
+                >
+                  {isSelected && !gameResult && (
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                      <Check size={20} className="text-white" />
+                    </div>
+                  )}
+
+                  {isLiedCard && gameResult && (
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
+                  </div>
+
+                  <div className="mb-2">
+                    <Castle size={40} className="text-amber-400" />
+                  </div>
+
+                  <div className="text-lg font-bold text-white mb-3">
+                    {house.id}号天使
+                  </div>
+
+                  <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                    {houseList.map((num: number) => (
+                      <span
+                        key={num}
+                        className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-amber-400 text-slate-900"
+                      >
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })()}
+
+            {/* 2号天使 */}
+            {(() => {
+              const house = houses[1];
+              const isSelected = playerSelectedCards.includes(house.id);
+              let houseList = angelLists[house.id] || [];
+              if (houseList.length === 0) {
+                houseList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].filter(num => {
+                  let housesToCheck: number[] = [3, 6, 7];
+                  let appearances = 0;
+                  housesToCheck.forEach(houseId => {
+                    const residentHouse = residentHouses.find(h => h.id === houseId);
+                    if (residentHouse && residentHouse.list.includes(num)) {
+                      appearances++;
+                    }
+                  });
+                  return appearances % 2 !== 0;
+                });
+              }
+              const isLiedCard = gameResult && gameResult.liedCard === house.id;
+
+              return (
+                <button
+                  key={house.id}
+                  onClick={() => toggleCardSelection(house.id)}
+                  disabled={!!gameResult}
+                  className={`
+                    relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                    bg-slate-800/50 border-2 border-slate-700
+                    ${isSelected ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                    ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                    ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+                  `}
+                  style={{ minHeight: '280px' }}
+                >
+                  {isSelected && !gameResult && (
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                      <Check size={20} className="text-white" />
+                    </div>
+                  )}
+
+                  {isLiedCard && gameResult && (
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
+                  </div>
+
+                  <div className="mb-2">
+                    <Castle size={40} className="text-amber-400" />
+                  </div>
+
+                  <div className="text-lg font-bold text-white mb-3">
+                    {house.id}号天使
+                  </div>
+
+                  <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                    {houseList.map((num: number) => (
+                      <span
+                        key={num}
+                        className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-amber-400 text-slate-900"
+                      >
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })()}
+
+            {/* 3号屋 */}
+            {(() => {
+              const house = houses[2];
+              const isSelected = playerSelectedCards.includes(house.id);
+              const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
+              const bit = bitMap[house.id];
+              const residentHouseDef = residentHouses.find(r => r.bit === bit);
+              const houseList = residentHouseDef ? residentHouseDef.list : [];
+              const iconColor = residentHouseDef ? residentHouseDef.lightColor : 'text-slate-600';
+              const isLiedCard = gameResult && gameResult.liedCard === house.id;
+
+              return (
+                <button
+                  key={house.id}
+                  onClick={() => toggleCardSelection(house.id)}
+                  disabled={!!gameResult}
+                  className={`
+                    relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                    bg-slate-800/50 border-2 border-slate-700
+                    ${isSelected ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                    ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                    ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+                  `}
+                  style={{ minHeight: '280px' }}
+                >
+                  {isSelected && !gameResult && (
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                      <Check size={20} className="text-white" />
+                    </div>
+                  )}
+
+                  {isLiedCard && gameResult && (
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
+                  </div>
+
+                  <div className="mb-2">
+                    <Home size={40} className={iconColor} />
+                  </div>
+
+                  <div className="text-lg font-bold text-white mb-3">
+                    {house.id}号屋
+                  </div>
+
+                  <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                    {houseList.map((num: number) => (
+                      <span
+                        key={num}
+                        className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-white text-slate-900"
+                      >
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+
+                  {residentHouseDef && (
+                    <div className="mt-2 flex items-center justify-center">
+                      <span className={`text-sm font-bold ${residentHouseDef.lightColor}`}>DNA: {residentHouseDef.bit}</span>
+                    </div>
+                  )}
+                </button>
+              );
+            })()}
+
+            {/* Row 2: 4号天使、5号屋、6号屋、7号屋 */}
+            {/* 4号天使 */}
+            {(() => {
+              const house = houses[3];
+              const isSelected = playerSelectedCards.includes(house.id);
+              let houseList = angelLists[house.id] || [];
+              if (houseList.length === 0) {
+                houseList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].filter(num => {
+                  let housesToCheck: number[] = [5, 6, 7];
+                  let appearances = 0;
+                  housesToCheck.forEach(houseId => {
+                    const residentHouse = residentHouses.find(h => h.id === houseId);
+                    if (residentHouse && residentHouse.list.includes(num)) {
+                      appearances++;
+                    }
+                  });
+                  return appearances % 2 !== 0;
+                });
+              }
+              const isLiedCard = gameResult && gameResult.liedCard === house.id;
+
+              return (
+                <button
+                  key={house.id}
+                  onClick={() => toggleCardSelection(house.id)}
+                  disabled={!!gameResult}
+                  className={`
+                    relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                    bg-slate-800/50 border-2 border-slate-700
+                    ${isSelected ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                    ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                    ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+                  `}
+                  style={{ minHeight: '280px' }}
+                >
+                  {isSelected && !gameResult && (
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                      <Check size={20} className="text-white" />
+                    </div>
+                  )}
+
+                  {isLiedCard && gameResult && (
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
+                  </div>
+
+                  <div className="mb-2">
+                    <Castle size={40} className="text-amber-400" />
+                  </div>
+
+                  <div className="text-lg font-bold text-white mb-3">
+                    {house.id}号天使
+                  </div>
+
+                  <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                    {houseList.map((num: number) => (
+                      <span
+                        key={num}
+                        className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-amber-400 text-slate-900"
+                      >
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })()}
+
+            {/* 5号屋、6号屋、7号屋 */}
+            {[4, 5, 6].map((index) => {
+              const house = houses[index];
+              const isSelected = playerSelectedCards.includes(house.id);
+              const bitMap: { [key: number]: number } = { 3: 1, 5: 2, 6: 4, 7: 8 };
+              const bit = bitMap[house.id];
+              const residentHouseDef = residentHouses.find(r => r.bit === bit);
+              const houseList = residentHouseDef ? residentHouseDef.list : [];
+              const iconColor = residentHouseDef ? residentHouseDef.lightColor : 'text-slate-600';
+              const isLiedCard = gameResult && gameResult.liedCard === house.id;
+
+              return (
+                <button
+                  key={house.id}
+                  onClick={() => toggleCardSelection(house.id)}
+                  disabled={!!gameResult}
+                  className={`
+                    relative flex flex-col items-center p-4 rounded-xl transition-all duration-300
+                    bg-slate-800/50 border-2 border-slate-700
+                    ${isSelected ? 'ring-4 ring-green-400 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.5)]' : 'hover:scale-105'}
+                    ${isLiedCard ? 'ring-4 ring-red-500 animate-pulse' : ''}
+                    ${gameResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
+                  `}
+                  style={{ minHeight: '280px' }}
+                >
+                  {isSelected && !gameResult && (
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white z-10">
+                      <Check size={20} className="text-white" />
+                    </div>
+                  )}
+
+                  {isLiedCard && gameResult && (
+                    <div className="absolute top-0 left-0 right-0 bg-red-500/90 py-2 rounded-t-xl z-10 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {gameResult.errorType === 'should_select' ? '应选未选' : '不应选但选了'}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 mb-3 bg-slate-950/50 p-2 rounded-lg">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[2] ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>4</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[1] ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>2</div>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 shadow-sm ${house.binary[0] ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-slate-700 opacity-20 text-slate-500'}`}>1</div>
+                  </div>
+
+                  <div className="mb-2">
+                    <Home size={40} className={iconColor} />
+                  </div>
+
+                  <div className="text-lg font-bold text-white mb-3">
+                    {house.id}号屋
+                  </div>
+
+                  <div className="w-full bg-slate-900/60 rounded p-2 flex flex-wrap gap-1 justify-center content-start h-32 overflow-auto border border-slate-700/50">
+                    {houseList.map((num: number) => (
+                      <span
+                        key={num}
+                        className="text-xs w-6 h-6 flex items-center justify-center rounded font-bold bg-white text-slate-900"
+                      >
+                        {num}
+                      </span>
+                    ))}
+                  </div>
+
+                  {residentHouseDef && (
+                    <div className="mt-2 flex items-center justify-center">
+                      <span className={`text-sm font-bold ${residentHouseDef.lightColor}`}>DNA: {residentHouseDef.bit}</span>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-col items-center gap-2 mb-6">
+            {!gameResult && playerSelectedCards.length === 0 && (
+              <p className="text-sm text-slate-400 italic">请至少选择一张卡牌</p>
+            )}
+            {!gameResult ? (
+              <button
+                onClick={calculateResult}
+                disabled={playerSelectedCards.length === 0}
+                className={`px-8 py-4 font-bold rounded-xl transition-all duration-300 shadow-lg ${
+                  playerSelectedCards.length === 0
+                    ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 hover:shadow-xl hover:scale-105'
+                }`}
+              >
+                确定 - 公布答案
+              </button>
+            ) : (
+              <button
+                onClick={resetGame}
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              >
+                重新开始
+              </button>
+            )}
+          </div>
+
+          {gameResult && (
+            <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border-2 border-amber-500 shadow-2xl animate-in zoom-in-95 duration-500">
+              <h3 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                读心结果
+              </h3>
+
+              <div className="space-y-4">
+                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700">
+                  <p className="text-slate-400 mb-2">你心里想的数字是：</p>
+                  <p className="text-6xl font-bold text-center text-white">
+                    {gameResult.guessedNumber}
+                  </p>
+                </div>
+
+                {gameResult.hasError ? (
+                  <div className="bg-red-900/30 rounded-xl p-6 border-2 border-red-500">
+                    <p className="text-red-300 text-lg font-semibold mb-2">检测到说谎！</p>
+                    <p className="text-red-200 mb-2">
+                      你在 <strong className="text-2xl text-red-400">
+                        {gameResult.liedCard === 0 ? '村民登记名单' : `#${gameResult.liedCard}`}
+                      </strong> {gameResult.liedCard === 0 ? '' : '号'}卡牌上说谎了
+                    </p>
+                    <div className="bg-red-950/50 rounded p-3 mt-3">
+                      <p className="text-red-200 text-sm">
+                        {gameResult.errorType === 'should_select' ? (
+                          <>
+                            你想的数字 <strong className="text-white">{gameResult.guessedNumber}</strong> 在这张卡牌的名单上，
+                            但你<strong className="text-red-300">没有选择</strong>它
+                          </>
+                        ) : (
+                          <>
+                            你想的数字 <strong className="text-white">{gameResult.guessedNumber}</strong> 不在这张卡牌的名单上，
+                            但你<strong className="text-red-300">选择</strong>了它
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <p className="text-sm text-red-300 mt-3">
+                      汉明码的纠错能力让我找到了错误位置和错误类型！
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-green-900/30 rounded-xl p-6 border-2 border-green-500">
+                    <p className="text-green-300 text-lg font-semibold mb-2">诚实的玩家！</p>
+                    <p className="text-green-200">
+                      你在所有卡牌上都说了实话
+                    </p>
+                    <p className="text-sm text-green-300 mt-3">
+                      汉明码确认无误！
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
