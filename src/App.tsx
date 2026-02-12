@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Home, Castle, Info, Users, Check, X, ScanLine, Lock } from 'lucide-react';
+import { useVipStatus } from './hooks/useVipStatus';
 
 interface GameResult {
   hasError: boolean;
@@ -24,24 +25,7 @@ interface ShowExplanation {
 
 const HammingVillage = () => {
   const [step, setStep] = useState(1);
-  const [isVip, setIsVip] = useState(false);
-
-  // 检测 VIP 状态
-  useEffect(() => {
-    // 检查 localStorage
-    const vipStatus = localStorage.getItem('hamming_vip');
-    if (vipStatus === 'true') {
-      setIsVip(true);
-      return;
-    }
-
-    // 检查 URL 参数
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('vip') === 'true') {
-      setIsVip(true);
-      localStorage.setItem('hamming_vip', 'true');
-    }
-  }, []);
+  const { isVip } = useVipStatus();
 
   // 非 VIP 用户只能访问 Phase 4
   useEffect(() => {
